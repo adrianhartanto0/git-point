@@ -27,10 +27,7 @@ const mapStateToProps = state => ({
   user: state.user.user,
   followers: state.user.followers,
   orgs: state.user.orgs,
-<<<<<<< HEAD
   language: state.auth.language,
-=======
->>>>>>> c36ebb39debed79394519694d8a9f8dbe354b849
   starCount: state.user.starCount,
   isFollowing: state.user.isFollowing,
   isPendingUser: state.user.isPendingUser,
