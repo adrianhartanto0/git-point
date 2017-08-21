@@ -6,6 +6,7 @@ import { ImageZoom } from 'components';
 
 type Props = {
   type: string,
+  starCount: string,
   initialUser: Object,
   user: Object,
   isFollowing: boolean,
@@ -93,6 +94,7 @@ const styles = StyleSheet.create({
 
 export const UserProfile = ({
   type,
+  starCount,
   initialUser,
   user,
   isFollowing,
@@ -139,6 +141,13 @@ export const UserProfile = ({
         <Text style={styles.unitText}>
           {translate('common.repositories', language)}
         </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.unit}>
+        <Text style={styles.unitNumber}>
+          {starCount}
+        </Text>
+        <Text style={styles.unitText}>Stars</Text>
       </TouchableOpacity>
 
       {type !== 'org' &&
