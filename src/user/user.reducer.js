@@ -7,16 +7,19 @@ import {
   GET_FOLLOWING,
   SEARCH_USER_REPOS,
   CHANGE_FOLLOW_STATUS,
+  GET_STAR_COUNT,
 } from './user.type';
 
 const initialState = {
   user: {},
   orgs: [],
+  starCount:'',
   isFollowing: false,
   repositories: [],
   followers: [],
   following: [],
   searchedUserRepos: [],
+  isPendingStarCount : false,
   isPendingUser: false,
   isPendingOrgs: false,
   isPendingCheckFollowing: false,
@@ -62,6 +65,24 @@ export const userReducer = (state = initialState, action = {}) => {
         ...state,
         error: action.payload,
         isPendingOrgs: false,
+      };
+     case GET_STAR_COUNT.PENDING:
+      return{
+        ...state,
+        starCount:'',
+        isPendingStarCount:true,
+      };
+    case GET_STAR_COUNT.SUCCESS:
+      return{
+        ...state,
+        starCount:action.payload,
+        isPendingStarCount:false,
+      };
+    case GET_STAR_COUNT.ERROR:
+      return{
+        ...state,
+        error:action.payload,
+        isPendingStarCount:false,
       };
     case GET_FOLLOW_STATUS.PENDING:
       return {

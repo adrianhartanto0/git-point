@@ -13,21 +13,23 @@ import {
   EntityInfo,
 } from 'components';
 import { colors, fonts } from 'config';
-import { getUserInfo, changeFollowStatus } from '../user.action';
+import { getUserInfo, changeFollowStatus, getStarCount } from '../user.action';
 
 const mapStateToProps = state => ({
   user: state.user.user,
   orgs: state.user.orgs,
+  starCount: state.user.starCount,
   isFollowing: state.user.isFollowing,
   isPendingUser: state.user.isPendingUser,
   isPendingOrgs: state.user.isPendingOrgs,
-  isPendingCheckFollowing: state.user.isPendingCheckFollowing,
+  isPendingCheckFollowing: state.user.isPendingCheckFollowing, 
 });
 
 const mapDispatchToProps = dispatch => ({
   getUserInfoByDispatch: user => dispatch(getUserInfo(user)),
   changeFollowStatusByDispatch: (user, isFollowing) =>
     dispatch(changeFollowStatus(user, isFollowing)),
+  getStarCountByDispatch: user => dispatch(getStarCount(user)),
 });
 
 const styles = StyleSheet.create({
@@ -45,8 +47,10 @@ class Profile extends Component {
   props: {
     getUserInfoByDispatch: Function,
     changeFollowStatusByDispatch: Function,
+    getStarCountByDispatch:Function,
     user: Object,
     orgs: Array,
+    starCount: string, 
     isFollowing: boolean,
     isPendingUser: boolean,
     isPendingOrgs: boolean,
@@ -55,9 +59,15 @@ class Profile extends Component {
   };
 
   componentDidMount() {
+    
     this.props.getUserInfoByDispatch(
       this.props.navigation.state.params.user.login
     );
+
+    this.props.getStarCountByDispatch(
+      this.props.navigation.state.params.user.login
+    );
+
   }
 
   showMenuActionSheet = () => {
@@ -76,6 +86,7 @@ class Profile extends Component {
     const {
       user,
       orgs,
+      starCount,
       isFollowing,
       isPendingUser,
       isPendingOrgs,
@@ -85,7 +96,7 @@ class Profile extends Component {
 
     const initialUser = navigation.state.params.user;
     const isPending = isPendingUser || isPendingOrgs;
-    const userActions = [isFollowing ? 'Unfollow' : 'Follow'];
+    const userActions = [isFollowing ? 'Unfollow' : 'Follow']; 
 
     return (
       <ViewContainer>
@@ -93,6 +104,7 @@ class Profile extends Component {
           renderContent={() =>
             <UserProfile
               type="user"
+              starCount={starCount}
               initialUser={initialUser}
               isFollowing={
                 isPendingUser || isPendingCheckFollowing ? false : isFollowing
