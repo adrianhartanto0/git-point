@@ -15,18 +15,20 @@ import {
   EntityInfo,
 } from 'components';
 import { colors, fonts, normalize } from 'config';
-import { getUser, getOrgs, signOut } from 'auth';
+import { getUser, getOrgs, signOut, getStarCount } from 'auth';
 import { openURLInView } from 'utils';
 
 const mapStateToProps = state => ({
   user: state.auth.user,
   orgs: state.auth.orgs,
+  starCount: state.auth.starCount,
   isPendingUser: state.auth.isPendingUser,
   isPendingOrgs: state.auth.isPendingOrgs,
 });
 
 const mapDispatchToProps = dispatch => ({
   getUserByDispatch: () => dispatch(getUser()),
+  getStarCountByDispatch: () => dispatch(getStarCount()),
   getOrgsByDispatch: () => dispatch(getOrgs()),
   signOutByDispatch: () => dispatch(signOut()),
 });
@@ -81,8 +83,10 @@ class AuthProfile extends Component {
     getUserByDispatch: Function,
     getOrgsByDispatch: Function,
     signOutByDispatch: Function,
+    getStarCountByDispatch: Function,
     user: Object,
     orgs: Array,
+    starCount: string,
     isPendingUser: boolean,
     isPendingOrgs: boolean,
     navigation: Object,
@@ -95,6 +99,7 @@ class AuthProfile extends Component {
   componentDidMount() {
     this.props.getUserByDispatch();
     this.props.getOrgsByDispatch();
+    this.props.getStarCountByDispatch();
   }
 
   checkForUpdate = () => {
@@ -133,7 +138,14 @@ class AuthProfile extends Component {
   }
 
   render() {
-    const { user, orgs, isPendingUser, isPendingOrgs, navigation } = this.props;
+    const {
+      user,
+      orgs,
+      isPendingUser,
+      isPendingOrgs,
+      navigation,
+      starCount,
+    } = this.props;
     const loading = isPendingUser || isPendingOrgs;
 
     return (
@@ -145,6 +157,7 @@ class AuthProfile extends Component {
             renderContent={() =>
               <UserProfile
                 type="user"
+                starCount={starCount}
                 initialUser={user}
                 user={user}
                 navigation={navigation}
