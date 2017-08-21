@@ -97,6 +97,10 @@ class Profile extends Component {
   getUserInfo = () => {
     this.setState({ refreshing: true });
 
+    this.props.getStarCountByDispatch(
+      this.props.navigation.state.params.user.login
+    );
+
     this.props
       .getUserInfoByDispatch(this.props.navigation.state.params.user.login)
       .then(() => {
@@ -142,7 +146,6 @@ class Profile extends Component {
         ? translate('user.profile.unfollow', language)
         : translate('user.profile.follow', language),
     ];
-    const userActions = [isFollowing ? 'Unfollow' : 'Follow']; 
 
     return (
       <ViewContainer>
