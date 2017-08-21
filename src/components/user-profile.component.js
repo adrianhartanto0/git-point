@@ -150,6 +150,13 @@ export const UserProfile = ({
         <Text style={styles.unitText}>Stars</Text>
       </TouchableOpacity>
 
+      <TouchableOpacity style={styles.unit}>
+        <Text style={styles.unitNumber}>
+          {starCount}
+        </Text>
+        <Text style={styles.unitText}>Stars</Text>
+      </TouchableOpacity>
+
       {type !== 'org' &&
         <TouchableOpacity
           style={styles.unit}

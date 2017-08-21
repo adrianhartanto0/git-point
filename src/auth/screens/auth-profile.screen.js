@@ -192,7 +192,6 @@ class AuthProfile extends Component {
               style={{ height: Dimensions.get('window').height / 3 }}
               size="large"
             />}
-
           {hasInitialUser &&
             user.bio &&
             user.bio !== '' &&
