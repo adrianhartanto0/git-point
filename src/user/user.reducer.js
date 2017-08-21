@@ -13,7 +13,7 @@ import {
 const initialState = {
   user: {},
   orgs: [],
-  starCount:'',
+  starCount:" ",
   isFollowing: false,
   repositories: [],
   followers: [],
@@ -69,7 +69,7 @@ export const userReducer = (state = initialState, action = {}) => {
      case GET_STAR_COUNT.PENDING:
       return{
         ...state,
-        starCount:'',
+        starCount:" ",
         isPendingStarCount:true,
       };
     case GET_STAR_COUNT.SUCCESS:

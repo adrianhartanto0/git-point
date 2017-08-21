@@ -17,7 +17,7 @@ const initialState = {
   user: {},
   hasInitialUser: false,
   orgs: [],
-  starCount: '',
+  starCount: " ",
   events: [],
   language: getLanguage(),
   isPendingStarCount: false,
