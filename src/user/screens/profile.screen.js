@@ -20,7 +20,7 @@ import {
 } from 'components';
 import { emojifyText, translate } from 'utils';
 import { colors, fonts } from 'config';
-import { getUserInfo, changeFollowStatus } from '../user.action';
+import { getUserInfo, changeFollowStatus, getStarCount } from '../user.action';
 
 const mapStateToProps = state => ({
   auth: state.auth.user,
@@ -28,16 +28,18 @@ const mapStateToProps = state => ({
   followers: state.user.followers,
   orgs: state.user.orgs,
   language: state.auth.language,
+  starCount: state.user.starCount,
   isFollowing: state.user.isFollowing,
   isPendingUser: state.user.isPendingUser,
   isPendingOrgs: state.user.isPendingOrgs,
-  isPendingCheckFollowing: state.user.isPendingCheckFollowing,
+  isPendingCheckFollowing: state.user.isPendingCheckFollowing, 
 });
 
 const mapDispatchToProps = dispatch => ({
   getUserInfoByDispatch: user => dispatch(getUserInfo(user)),
   changeFollowStatusByDispatch: (user, isFollowing) =>
     dispatch(changeFollowStatus(user, isFollowing)),
+  getStarCountByDispatch: user => dispatch(getStarCount(user)),
 });
 
 const styles = StyleSheet.create({
@@ -56,10 +58,12 @@ class Profile extends Component {
     getUserInfoByDispatch: Function,
     changeFollowStatusByDispatch: Function,
     auth: Object,
+    getStarCountByDispatch:Function,
     user: Object,
     followers: Array,
     orgs: Array,
     language: string,
+    starCount: string, 
     isFollowing: boolean,
     isPendingUser: boolean,
     isPendingOrgs: boolean,
@@ -79,9 +83,15 @@ class Profile extends Component {
   }
 
   componentDidMount() {
+    
     this.props.getUserInfoByDispatch(
       this.props.navigation.state.params.user.login
     );
+
+    this.props.getStarCountByDispatch(
+      this.props.navigation.state.params.user.login
+    );
+
   }
 
   getUserInfo = () => {
@@ -117,6 +127,7 @@ class Profile extends Component {
       user,
       orgs,
       language,
+      starCount,
       isFollowing,
       isPendingUser,
       isPendingOrgs,
@@ -131,6 +142,7 @@ class Profile extends Component {
         ? translate('user.profile.unfollow', language)
         : translate('user.profile.follow', language),
     ];
+    const userActions = [isFollowing ? 'Unfollow' : 'Follow']; 
 
     return (
       <ViewContainer>
@@ -138,6 +150,7 @@ class Profile extends Component {
           renderContent={() =>
             <UserProfile
               type="user"
+              starCount={starCount}
               initialUser={initialUser}
               isFollowing={
                 isPendingUser || isPendingCheckFollowing ? false : isFollowing
