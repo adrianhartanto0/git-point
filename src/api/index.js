@@ -324,6 +324,15 @@ export const requestStarCount = owner => {
           output = linkHeader.split('=').pop();
         }
 
+        // Add 'k' if star more than 1000
+
+        if (output > 1000) {
+          const outDecimal = (output / 1000).toString();
+          const dotIndex = outDecimal.indexOf('.');
+
+          output = `${outDecimal.substring(0, dotIndex + 3)}k`;
+        }
+
         resolve(output);
       }
     };
