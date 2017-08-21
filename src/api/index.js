@@ -252,6 +252,39 @@ export const fetchMarkRepoNotificationAsRead = (repoFullName, accessToken) => {
   return fetch(ENDPOINT, accessTokenParametersPUT(accessToken));
 };
 
+export const requestStarCount = owner => {
+  const ENDPOINT = `https://api.github.com/users/${owner}/starred?per_page=1`;
+
+  const requestPromise = new Promise((resolve, reject) => {
+    const req = new XMLHttpRequest();
+
+    req.open('GET', ENDPOINT);
+    req.onerror = () => reject(req.statusText);
+
+    req.onreadystatechange = () => {
+      if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+        let linkHeader = req.getResponseHeader('Link');
+        let output = '';
+
+        if (linkHeader == null) {
+          const responseBody = JSON.parse(req.response);
+
+          output = responseBody.length;
+        } else {
+          linkHeader = linkHeader.match(/page=(\d)+/g).pop();
+          output = linkHeader.split('=').pop();
+        }
+
+        resolve(output);
+      }
+    };
+
+    req.send();
+  });
+
+  return requestPromise;
+};
+
 export const fetchChangeStarStatusRepo = (
   owner,
   repo,
