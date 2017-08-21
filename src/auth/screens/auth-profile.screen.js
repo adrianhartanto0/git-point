@@ -21,7 +21,7 @@ import {
   EntityInfo,
 } from 'components';
 import { colors, fonts, normalize } from 'config';
-import { getUser, getOrgs, signOut } from 'auth';
+import { getUser, getOrgs, signOut, getStarCount } from 'auth';
 import { emojifyText, openURLInView, translate } from 'utils';
 import { version } from 'package.json';
 
@@ -29,6 +29,7 @@ const mapStateToProps = state => ({
   user: state.auth.user,
   orgs: state.auth.orgs,
   language: state.auth.language,
+  starCount: state.auth.starCount,
   isPendingUser: state.auth.isPendingUser,
   isPendingOrgs: state.auth.isPendingOrgs,
   hasInitialUser: state.auth.hasInitialUser,
@@ -36,6 +37,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getUserByDispatch: () => dispatch(getUser()),
+  getStarCountByDispatch: () => dispatch(getStarCount()),
   getOrgsByDispatch: () => dispatch(getOrgs()),
   signOutByDispatch: () => dispatch(signOut()),
 });
@@ -85,9 +87,11 @@ class AuthProfile extends Component {
   props: {
     getUserByDispatch: Function,
     getOrgsByDispatch: Function,
+    getStarCountByDispatch: Function,
     user: Object,
     orgs: Array,
     language: string,
+    starCount: string,
     isPendingUser: boolean,
     isPendingOrgs: boolean,
     hasInitialUser: boolean,
@@ -139,12 +143,14 @@ class AuthProfile extends Component {
   refreshProfile = () => {
     this.props.getUserByDispatch();
     this.props.getOrgsByDispatch();
+    this.props.getStarCountByDispatch();
   };
 
   render() {
     const {
       user,
       orgs,
+      starCount,
       isPendingUser,
       isPendingOrgs,
       language,
@@ -160,6 +166,7 @@ class AuthProfile extends Component {
           renderContent={() =>
             <UserProfile
               type="user"
+              starCount={starCount}
               initialUser={hasInitialUser ? user : {}}
               user={hasInitialUser ? user : {}}
               language={language}

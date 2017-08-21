@@ -6,6 +6,7 @@ import {
   GET_AUTH_ORGS,
   GET_EVENTS,
   CHANGE_LANGUAGE,
+  GET_AUTH_STAR_COUNT,
 } from './auth.type';
 
 const initialState = {
@@ -16,8 +17,10 @@ const initialState = {
   user: {},
   hasInitialUser: false,
   orgs: [],
+  starCount: '',
   events: [],
   language: getLanguage(),
+  isPendingStarCount: false,
   isPendingUser: false,
   isPendingOrgs: false,
   isPendingEvents: false,
@@ -96,6 +99,23 @@ export const authReducer = (state = initialState, action = {}) => {
         ...state,
         error: action.payload,
         isPendingOrgs: false,
+      };
+    case GET_AUTH_STAR_COUNT.PENDING:
+      return {
+        ...state,
+        isPendingStarCount: true,
+      };
+    case GET_AUTH_STAR_COUNT.SUCCESS:
+      return {
+        ...state,
+        starCount: action.payload,
+        isPendingStarCount: false,
+      };
+    case GET_AUTH_STAR_COUNT.ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        isPendingStarCount: false,
       };
     case GET_EVENTS.PENDING:
       return {
