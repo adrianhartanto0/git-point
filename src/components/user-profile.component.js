@@ -5,6 +5,7 @@ import { colors, fonts, normalize } from 'config';
 
 type Props = {
   type: string,
+  starCount: string,
   initialUser: Object,
   user: Object,
   isFollowing: boolean,
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
 
 export const UserProfile = ({
   type,
+  starCount,
   initialUser,
   user,
   isFollowing,
@@ -112,6 +114,13 @@ export const UserProfile = ({
           {user.public_repos + (user.total_private_repos || 0) || ''}
         </Text>
         <Text style={styles.unitText}>Repositories</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.unit}>
+        <Text style={styles.unitNumber}>
+          {starCount}
+        </Text>
+        <Text style={styles.unitText}>Stars</Text>
       </TouchableOpacity>
 
       {type !== 'org' &&
